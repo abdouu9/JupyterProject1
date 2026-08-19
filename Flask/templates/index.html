@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fruit Classification - Flask</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1> Fruit Classification App</h1>
+    <p>Upload an image to identify whether it is an <b>apple</b>, <b>banana</b>, or <b>orange</b>.</p>
+
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/png, image/jpeg" required>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if image_path %}
+        <h2>Uploaded Image:</h2>
+        <img src="/{{ image_path }}" class="uploaded">
+    {% endif %}
+
+    {% if prediction %}
+        <h2>Prediction:</h2>
+        <div class="result">
+            <p><b>Predicted Class:</b> {{ prediction.class }}</p>
+            <p><b>Confidence:</b> {{ prediction.confidence | round(2) }}%</p>
+        </div>
+
+        <h3>Class Probabilities</h3>
+        <ul>
+            {% for c, prob in probabilities.items() %}
+                <li>{{ c }} : {{ prob | round(2) }}%</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+</div>
+
+</body>
+</html>
